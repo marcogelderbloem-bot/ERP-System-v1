@@ -23,7 +23,7 @@
     <section class="panel overflow-hidden" aria-labelledby="catalogTitle"><div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:p-6 xl:flex-row xl:items-center xl:justify-between"><div><h2 id="catalogTitle" class="font-display text-sm font-bold text-slate-900">Product catalog</h2><p class="mt-1 text-xs text-slate-500">Edit fields to recalculate pricing in real time.</p></div><div class="flex flex-col gap-2 sm:flex-row sm:items-center"><label class="relative"><span class="absolute left-3 top-2.5 text-slate-400">⌕</span><input id="searchInput" class="search" type="search" placeholder="Search products…" aria-label="Search by product code or description"></label><label class="btn btn-secondary">↑ Upload CSV<input id="csvFile" class="sr-only" type="file" accept=".csv,text/csv"></label><button id="addRowBtn" class="btn btn-primary" type="button">＋ Add product</button></div></div>
       <div id="uploadZone" class="upload-zone mx-5 mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-4 py-3 text-center text-xs text-slate-500 sm:mx-6"><span><b class="text-slate-700">Drop a CSV file here</b> or use Upload CSV. Upload replaces the current catalog.</span></div><div id="statusMessage" class="mx-5 mt-3 hidden rounded-lg px-3 py-2 text-xs sm:mx-6" role="status"></div>
       <div class="table-wrap mt-4"><table aria-label="Product pricing table"><thead><tr><th class="pl-6 text-left">Product code</th><th class="text-left">Description</th><th class="text-right">Purchase price</th><th class="text-right">Purchase price<br>(incl. VAT)</th><th class="text-right">Transport / unit</th><th class="text-right">Other costs</th><th class="text-right">Landed cost</th><th class="text-right">Margin</th><th class="text-right">Net profit</th><th class="text-right">Selling price<br>(excl. VAT)</th><th class="pr-5 text-center">Action</th></tr></thead><tbody id="productRows"></tbody></table></div>
-      <div id="emptyState" class="hidden px-6 py-14 text-center"><p class="font-display text-sm font-bold text-slate-800">No products to show</p><p id="emptyHint" class="mt-1 text-xs text-slate-500">Add a product or upload a CSV to get started.</p><button id="emptyAddBtn" class="btn btn-secondary mt-4" type="button">Add your first product</button></div><div class="flex flex-col gap-2 border-t border-slate-100 px-5 py-3 text-[11px] text-slate-400 sm:flex-row sm:justify-between"><span>Landed cost = purchase price (incl. VAT) + transport / unit + other costs.</span><span>Data stays in this browser session; no server upload.</span></div></section>
+      <div id="emptyState" class="hidden px-6 py-14 text-center"><p class="font-display text-sm font-bold text-slate-800">No products to show</p><p id="emptyHint" class="mt-1 text-xs text-slate-500">Add a product or upload a CSV to get started.</p><button id="emptyAddBtn" class="btn btn-secondary mt-4" type="button">Add your first product</button></div><div class="flex flex-col gap-2 border-t border-slate-100 px-5 py-3 text-[11px] text-slate-400 sm:flex-row sm:justify-between"><span>Net profit = landed cost × margin. Selling price = landed cost + net profit.</span><span>Data stays in this browser session; no server upload.</span></div></section>
     <footer class="py-6 text-center text-[11px] text-slate-400">Marginwise · A clear view of every cost behind your price.</footer>
   </main>
 </div>
@@ -40,13 +40,16 @@
   function calculate(row) {
     const vat = pct('#vatRate'), purchase = num(row.purchase);
     const purchaseIncVat = $('#includesVat').checked ? purchase : purchase * (1 + vat);
-    // Landed cost is calculated from the VAT-inclusive purchase price plus the other per-unit costs.
     const landed = purchaseIncVat + num(row.transport) + num(row.other);
     const margin = (row.override ? Math.min(99,num(row.margin)) : globalMargin()) / 100;
-    const overhead = pct('#overheadRate'), denominator = 1 - margin - overhead;
-    if (denominator <= 0) return {purchaseIncVat,landed,margin,invalid:true,selling:0,profit:-landed};
-    const selling = landed / denominator;
-    return {purchaseIncVat,landed,margin,invalid:false,selling,profit:selling*(1-overhead)-landed};
+
+    // Net profit is a direct percentage of the landed cost.
+    const profit = landed * margin;
+
+    // Selling price excl. VAT is the landed cost plus net profit.
+    const selling = landed + profit;
+
+    return {purchaseIncVat, landed, margin, profit, selling, invalid:false};
   }
   function addProduct(p={}) {
     const row={id:nextId++,code:p.code??'',description:p.description??'',purchase:p.purchase??'',transport:p.transport??'',other:p.other??'',margin:p.margin??'',override:p.margin!==undefined&&p.margin!==null&&p.margin!==''};
@@ -60,23 +63,24 @@
     tbody.appendChild(tr);
   }
   function recalculate() {
-    let totalProfit=0, marginSum=0, valid=0, invalid=false;
+    let totalProfit=0, marginSum=0, valid=0;
     rows.forEach(row=>{
       const tr=tbody.querySelector(`tr[data-id="${row.id}"]`); if(!tr)return;
       const result=calculate(row);
       tr.querySelector('[data-result="purchaseIncVat"]').textContent=fmt(result.purchaseIncVat);
       tr.querySelector('[data-result="landed"]').textContent=fmt(result.landed);
       tr.querySelector('[data-result="profit"]').textContent=fmt(result.profit);
-      tr.querySelector('[data-result="selling"]').textContent=result.invalid?'—':fmt(result.selling);
+      tr.querySelector('[data-result="selling"]').textContent=fmt(result.selling);
       tr.querySelector('[data-field="margin"]').placeholder=globalMargin().toFixed(1);
       tr.querySelector('[data-field="margin"]').classList.toggle('text-indigo-700',row.override);
-      if(result.invalid)invalid=true; else { totalProfit+=result.profit; marginSum+=result.profit/result.selling; valid++; }
+      totalProfit+=result.profit;
+      marginSum+=result.margin*100;
+      valid++;
     });
     $('#totalProducts').textContent=rows.length.toLocaleString();
-    $('#averageMargin').textContent=valid?`${(marginSum/valid*100).toFixed(1)}%`:'—';
+    $('#averageMargin').textContent=valid?`${(marginSum/valid).toFixed(1)}%`:'—';
     $('#totalProfit').textContent=valid?fmt(totalProfit):'—';
-    const notice=$('#pricingNotice');
-    if(invalid){notice.textContent='A product margin plus overhead fee must be less than 100%. Reduce one of the rates to calculate its selling price.';notice.classList.remove('hidden');}else notice.classList.add('hidden');
+    $('#pricingNotice').classList.add('hidden');
     updateVisibility();
   }
   function updateVisibility() {
@@ -93,7 +97,7 @@
   tbody.addEventListener('click',e=>{const button=e.target.closest('.delete-row');if(!button)return;const tr=button.closest('tr'),id=Number(tr.dataset.id);rows.splice(rows.findIndex(r=>r.id===id),1);tr.remove();recalculate();});
   ['#globalMargin','#vatRate','#overheadRate'].forEach(s=>$(s).addEventListener('input',recalculate));$('#includesVat').addEventListener('change',recalculate);$('#searchInput').addEventListener('input',updateVisibility);$('#addRowBtn').addEventListener('click',()=>addProduct());$('#emptyAddBtn').addEventListener('click',()=>addProduct());
   $('#sampleBtn').addEventListener('click',()=>download('sample-products.csv','Product Code,Description,Purchase Price,Transport Cost,Other Costs\nSKU-001,Everyday notebook,4.50,0.65,0.30\nSKU-002,Desk lamp,12.00,1.20,0.85\nSKU-003,Canvas tote bag,3.25,0.45,0.20\n'));
-  $('#exportBtn').addEventListener('click',()=>{const headers=['Product Code','Description','Purchase Price','Purchase Price (Inc. VAT)','Transport Cost','Other Costs','Total Landed Cost','Individual Margin (%)','Net Profit Amount','Recommended Selling Price (Excl. VAT)'];const lines=[headers,...rows.map(row=>{const r=calculate(row);return[row.code,row.description,num(row.purchase).toFixed(2),r.purchaseIncVat.toFixed(2),num(row.transport).toFixed(2),num(row.other).toFixed(2),r.landed.toFixed(2),(r.margin*100).toFixed(2),r.profit.toFixed(2),r.invalid?'':r.selling.toFixed(2)];})];download('calculated-product-prices.csv',lines.map(line=>line.map(csvEscape).join(',')).join('\r\n'));status(`Exported ${rows.length} product${rows.length===1?'':'s'} to CSV.`);});
+  $('#exportBtn').addEventListener('click',()=>{const headers=['Product Code','Description','Purchase Price','Purchase Price (Inc. VAT)','Transport Cost','Other Costs','Total Landed Cost','Individual Margin (%)','Net Profit Amount','Recommended Selling Price (Excl. VAT)'];const lines=[headers,...rows.map(row=>{const r=calculate(row);return[row.code,row.description,num(row.purchase).toFixed(2),r.purchaseIncVat.toFixed(2),num(row.transport).toFixed(2),num(row.other).toFixed(2),r.landed.toFixed(2),(r.margin*100).toFixed(2),r.profit.toFixed(2),r.selling.toFixed(2)];})];download('calculated-product-prices.csv',lines.map(line=>line.map(csvEscape).join(',')).join('\r\n'));status(`Exported ${rows.length} product${rows.length===1?'':'s'} to CSV.`);});
   $('#csvFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{importCsv(await file.text());}catch(err){status(err.message||'Could not read that CSV file.',true);}e.target.value='';});
   const zone=$('#uploadZone');zone.addEventListener('click',()=>$('#csvFile').click());zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));zone.addEventListener('drop',async e=>{e.preventDefault();zone.classList.remove('dragover');const file=e.dataTransfer.files[0];if(!file)return;if(!/\.csv$/i.test(file.name)&&file.type!=='text/csv'){status('Please drop a CSV file.',true);return;}try{importCsv(await file.text());}catch(err){status(err.message||'Could not read that CSV file.',true);}});
   addProduct({code:'SKU-001',description:'Everyday notebook',purchase:'4.50',transport:'0.65',other:'0.30'});addProduct({code:'SKU-002',description:'Desk lamp',purchase:'12.00',transport:'1.20',other:'0.85'});addProduct({code:'SKU-003',description:'Canvas tote bag',purchase:'3.25',transport:'0.45',other:'0.20'});
