@@ -10,274 +10,94 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    :root { color-scheme: light; --ink: #17233b; --muted: #748097; --line: #e8ecf3; --blue: #4263eb; }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #f6f8fc; color: var(--ink); font-family: 'DM Sans', sans-serif; }
-    h1,h2,h3,.font-display { font-family: 'Manrope', sans-serif; }
-    input,button { font: inherit; }
-    .panel { background: white; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 2px 8px rgba(28,44,77,.025); }
-    .setting-input { height: 40px; width: 100%; border: 1px solid #e3e8f0; border-radius: 9px; background: #fff; padding: 0 12px; color: #17233b; outline: none; transition: .15s; }
-    .setting-input:focus,.cell-input:focus { border-color: #8095ff; box-shadow: 0 0 0 3px rgba(66,99,235,.10); }
-    .cell-input { width: 100%; min-width: 86px; border: 1px solid transparent; border-radius: 7px; background: transparent; padding: 7px 8px; outline: none; color: #24314b; transition: .15s; }
-    .cell-input:hover { border-color: #e4e9f1; background: #fff; }
-    .cell-input:focus { background: #fff; }
-    .numeric { text-align: right; font-variant-numeric: tabular-nums; }
-    .table-wrap { overflow-x: auto; }
-    table { border-collapse: separate; border-spacing: 0; min-width: 1320px; width: 100%; }
-    th { background: #f9fafc; color: #8290a5; font-size: 10px; font-weight: 700; letter-spacing: .075em; text-transform: uppercase; white-space: nowrap; }
-    th,td { border-bottom: 1px solid #edf0f5; padding: 11px 10px; }
-    tbody tr:last-child td { border-bottom: 0; }
-    tbody tr:hover { background: #fcfdff; }
-    .metric { font-variant-numeric: tabular-nums; }
-    .upload-zone { transition: .18s ease; }
-    .upload-zone.dragover { border-color: #4263eb; background: #f0f3ff; }
-    .switch { appearance: none; width: 38px; height: 22px; background: #d7dce5; border-radius: 99px; position: relative; cursor: pointer; transition: .2s; flex: 0 0 auto; }
-    .switch:checked { background: #4263eb; }
-    .switch::after { content: ''; position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; left: 3px; top: 3px; box-shadow: 0 1px 3px #0002; transition: .2s; }
-    .switch:checked::after { transform: translateX(16px); }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 9px; font-size: 13px; font-weight: 600; transition: .15s; white-space: nowrap; }
-    .btn-primary { background: #4263eb; color: white; padding: 10px 14px; box-shadow: 0 3px 8px #4263eb2b; }
-    .btn-primary:hover { background: #3453d1; transform: translateY(-1px); }
-    .btn-secondary { background: white; color: #4a5870; border: 1px solid #e4e8ef; padding: 9px 12px; }
-    .btn-secondary:hover { background: #f8f9fc; border-color: #cfd6e2; }
-    .btn-quiet { color: #718097; padding: 8px; }
-    .btn-quiet:hover { background: #fff0f0; color: #d34b58; }
-    .search { height: 40px; border: 1px solid #e4e8ef; border-radius: 9px; background: white; outline: none; padding: 0 12px 0 36px; width: 250px; font-size: 13px; }
-    .search:focus { border-color: #8095ff; box-shadow: 0 0 0 3px #4263eb1a; }
-    @media (max-width: 640px) { .search { width: 100%; } }
+    :root{color-scheme:light;--ink:#17233b;--line:#e8ecf3}*{box-sizing:border-box}body{margin:0;background:#f6f8fc;color:var(--ink);font-family:'DM Sans',sans-serif}h1,h2,.font-display{font-family:'Manrope',sans-serif}input,button{font:inherit}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 8px #1c2c4d08}.setting-input{height:40px;width:100%;border:1px solid #e3e8f0;border-radius:9px;background:#fff;padding:0 12px;outline:none}.setting-input:focus,.cell-input:focus{border-color:#8095ff;box-shadow:0 0 0 3px #4263eb1a}.cell-input{width:100%;min-width:86px;border:1px solid transparent;border-radius:7px;background:transparent;padding:7px 8px;outline:none;color:#24314b}.cell-input:hover,.cell-input:focus{border-color:#e4e9f1;background:white}.numeric{text-align:right;font-variant-numeric:tabular-nums}.table-wrap{overflow-x:auto}table{border-collapse:separate;border-spacing:0;min-width:1380px;width:100%}th{background:#f9fafc;color:#8290a5;font-size:10px;font-weight:700;letter-spacing:.075em;text-transform:uppercase;white-space:nowrap}th,td{border-bottom:1px solid #edf0f5;padding:11px 10px}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fcfdff}.metric{font-variant-numeric:tabular-nums}.upload-zone{transition:.18s}.upload-zone.dragover{border-color:#4263eb;background:#f0f3ff}.switch{appearance:none;width:38px;height:22px;background:#d7dce5;border-radius:99px;position:relative;cursor:pointer;flex:none}.switch:checked{background:#4263eb}.switch:after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;left:3px;top:3px;box-shadow:0 1px 3px #0002;transition:.2s}.switch:checked:after{transform:translateX(16px)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:9px;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer}.btn-primary{background:#4263eb;color:#fff;padding:10px 14px;box-shadow:0 3px 8px #4263eb2b}.btn-primary:hover{background:#3453d1}.btn-secondary{background:#fff;color:#4a5870;border:1px solid #e4e8ef;padding:9px 12px}.btn-secondary:hover{background:#f8f9fc}.btn-quiet{color:#718097;padding:8px}.btn-quiet:hover{background:#fff0f0;color:#d34b58}.search{height:40px;border:1px solid #e4e8ef;border-radius:9px;background:#fff;outline:none;padding:0 12px 0 36px;width:250px;font-size:13px}.search:focus{border-color:#8095ff;box-shadow:0 0 0 3px #4263eb1a}@media(max-width:640px){.search{width:100%}}
   </style>
 </head>
 <body>
-  <div class="min-h-screen">
-    <header class="border-b border-slate-200/80 bg-white">
-      <div class="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-4 sm:px-8">
-        <a href="#" class="flex items-center gap-3" aria-label="Marginwise home">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-200"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 17.5 9.2 12l3.3 3.2L20 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 7H20v4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span><span class="font-display block text-[17px] font-extrabold tracking-tight text-slate-900">marginwise</span><span class="block text-[11px] font-medium text-slate-400">PRICING WORKSPACE</span></span>
-        </a>
-        <div class="hidden items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 sm:flex"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>All changes saved locally</div>
-      </div>
-    </header>
-    <main class="mx-auto max-w-[1600px] px-4 py-7 sm:px-8 sm:py-9">
-      <section class="mb-7 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-        <div><div class="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[.12em] text-indigo-600"><span class="h-px w-5 bg-indigo-500"></span>Product economics</div><h1 class="font-display text-2xl font-extrabold tracking-tight text-slate-900 sm:text-[30px]">Pricing &amp; landed cost calculator</h1><p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Know your true per-unit cost, protect your margins, and set smarter selling prices across your catalog.</p></div>
-        <div class="flex flex-wrap gap-2">
-          <button id="sampleBtn" class="btn btn-secondary" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v3h14v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Download sample CSV</button>
-          <button id="exportBtn" class="btn btn-primary" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Export calculated prices</button>
-        </div>
-      </section>
-      <section class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3" aria-label="Catalog summary">
-        <article class="panel flex items-center gap-4 p-5"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z" stroke="currentColor" stroke-width="1.7"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div><div><p class="text-xs font-medium text-slate-500">Total products</p><p id="totalProducts" class="metric mt-1 text-[23px] font-bold tracking-tight text-slate-900">0</p></div></article>
-        <article class="panel flex items-center gap-4 p-5"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 18V6m0 12h16M8 15l3-4 3 2 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h3v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><p class="text-xs font-medium text-slate-500">Average profit margin</p><p id="averageMargin" class="metric mt-1 text-[23px] font-bold tracking-tight text-slate-900">—</p></div></article>
-        <article class="panel flex items-center gap-4 p-5"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18m5-13.5c0-1.7-2.2-3-5-3s-5 1.3-5 3 1.6 2.7 5 3.5 5 1.8 5 3.5-2.2 3-5 3-5-1.3-5-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><p class="text-xs font-medium text-slate-500">Potential profit <span class="text-slate-400">· 1 unit / SKU</span></p><p id="totalProfit" class="metric mt-1 text-[23px] font-bold tracking-tight text-emerald-700">—</p></div></article>
-      </section>
-      <section class="panel mb-6 p-5 sm:p-6" aria-labelledby="settingsTitle">
-        <div class="mb-5 flex items-center justify-between"><div><h2 id="settingsTitle" class="font-display text-sm font-bold text-slate-900">Global pricing settings</h2><p class="mt-1 text-xs text-slate-500">Update defaults across your catalog. Product-specific margins remain unchanged.</p></div><span class="hidden rounded-md bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 sm:inline-block">Applied instantly</span></div>
-        <div class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 xl:grid-cols-4">
-          <label class="block"><span class="mb-2 block text-xs font-semibold text-slate-600">Universal target profit margin</span><span class="relative block"><input id="globalMargin" class="setting-input pr-9" type="number" min="0" max="99" step="0.1" value="30" aria-label="Universal target profit margin percentage"><span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">%</span></span></label>
-          <label class="block"><span class="mb-2 block text-xs font-semibold text-slate-600">VAT rate</span><span class="relative block"><input id="vatRate" class="setting-input pr-9" type="number" min="0" max="100" step="0.1" value="15" aria-label="VAT rate percentage"><span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">%</span></span></label>
-          <label class="block"><span class="mb-2 block text-xs font-semibold text-slate-600">Overhead / payment fee</span><span class="relative block"><input id="overheadRate" class="setting-input pr-9" type="number" min="0" max="99" step="0.1" value="2.5" aria-label="Overhead and payment gateway fee percentage"><span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">%</span></span></label>
-          <div class="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 px-4 py-3"><div><p class="text-xs font-semibold text-slate-700">Costs include VAT</p><p class="mt-1 text-[11px] leading-4 text-slate-500">Remove input VAT before pricing</p></div><input id="includesVat" class="switch" type="checkbox" aria-label="Input costs already include VAT"></div>
-        </div>
-        <p id="pricingNotice" class="mt-4 hidden rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800" role="status"></p>
-      </section>
-      <section class="panel overflow-hidden" aria-labelledby="catalogTitle">
-        <div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:p-6 xl:flex-row xl:items-center xl:justify-between">
-          <div><div class="flex items-center gap-2"><h2 id="catalogTitle" class="font-display text-sm font-bold text-slate-900">Product catalog</h2><span id="rowCount" class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500">0 products</span></div><p class="mt-1 text-xs text-slate-500">Edit any field to recalculate pricing in real time.</p></div>
-          <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label class="relative block"><svg class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="searchInput" class="search" type="search" placeholder="Search products…" aria-label="Search by product code or description"></label>
-            <label class="btn btn-secondary cursor-pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 14v5h14v-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Upload CSV<input id="csvFile" class="sr-only" type="file" accept=".csv,text/csv" /></label>
-            <button id="addRowBtn" class="btn btn-primary" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add product</button>
-          </div>
-        </div>
-        <div id="uploadZone" class="upload-zone mx-5 mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-4 py-3 text-center text-xs text-slate-500 sm:mx-6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 14v5h14v-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong class="font-semibold text-slate-700">Drop a CSV file here</strong> or use Upload CSV. Upload replaces the current catalog.</span></div>
-        <div id="statusMessage" class="mx-5 mt-3 hidden rounded-lg px-3 py-2 text-xs sm:mx-6" role="status"></div>
-        <div class="table-wrap mt-4"><table aria-label="Product pricing table">
-          <thead><tr><th class="pl-6 text-left">Product code</th><th class="text-left">Description</th><th class="text-right">Purchase price</th><th class="text-right">Purchase price<br>(incl. VAT)</th><th class="text-right">Transport / unit</th><th class="text-right">Other costs</th><th class="text-right">Landed cost</th><th class="text-right">Margin</th><th class="text-right">Net profit</th><th class="text-right">Selling price<br>(excl. VAT)</th><th class="pr-5 text-center">Action</th></tr></thead>
-          <tbody id="productRows"></tbody>
-        </table></div>
-        <div id="emptyState" class="hidden px-6 py-14 text-center"><div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13Z" stroke="currentColor" stroke-width="1.6"/><path d="M8 8h8M8 12h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><p class="font-display text-sm font-bold text-slate-800">No products to show</p><p id="emptyHint" class="mt-1 text-xs text-slate-500">Add a product or upload a CSV to get started.</p><button id="emptyAddBtn" class="btn btn-secondary mt-4" type="button">Add your first product</button></div>
-        <div class="flex flex-col gap-2 border-t border-slate-100 px-5 py-3 text-[11px] text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-6"><span>Prices are calculated per unit. Profit margin is based on net selling price.</span><span>Data stays in this browser session; no server upload.</span></div>
-      </section>
-      <footer class="py-6 text-center text-[11px] text-slate-400">Marginwise · A clear view of every cost behind your price.</footer>
-    </main>
-  </div>
-  <script>
-    (() => {
-      'use strict';
-      const $ = (selector) => document.querySelector(selector);
-      const tbody = $('#productRows');
-      const rows = [];
-      let nextId = 1;
-      const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-      const num = (value) => { const parsed = Number.parseFloat(value); return Number.isFinite(parsed) ? Math.max(0, parsed) : 0; };
-      const fmt = (value) => `R ${new Intl.NumberFormat('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number.isFinite(value) ? value : 0)}`;
-      const rate = (selector) => Math.min(100, Math.max(0, num($(selector).value))) / 100;
-      const currentGlobalMargin = () => Math.min(99, num($('#globalMargin').value));
-
-      function addProduct(product = {}) {
-        const row = { id: nextId++, code: product.code ?? '', description: product.description ?? '', purchase: product.purchase ?? '', transport: product.transport ?? '', other: product.other ?? '', margin: product.margin ?? '', override: product.margin !== undefined && product.margin !== null && product.margin !== '' };
-        rows.push(row);
-        renderRow(row);
-        recalculate();
-      }
-      function renderRow(row) {
-        const tr = document.createElement('tr');
-        tr.dataset.id = row.id;
-        const textCell = (field, placeholder) => `<td><input class="cell-input" data-field="${field}" aria-label="${placeholder}" value="${esc(row[field])}" placeholder="${placeholder}"></td>`;
-        const numberCell = (field, placeholder) => `<td><input class="cell-input numeric" data-field="${field}" type="number" min="0" step="0.01" aria-label="${placeholder}" value="${esc(row[field])}" placeholder="0.00"></td>`;
-        tr.innerHTML = `${textCell('code','e.g. SKU-001')} ${textCell('description','Product name')} ${numberCell('purchase','0.00')}<td class="metric whitespace-nowrap text-right text-xs font-semibold text-slate-700" data-result="purchaseIncVat">—</td> ${numberCell('transport','0.00')} ${numberCell('other','0.00')}<td class="metric whitespace-nowrap text-right text-xs font-semibold text-slate-700" data-result="landed">—</td><td><div class="relative"><input class="cell-input numeric pr-6" data-field="margin" type="number" min="0" max="99" step="0.1" aria-label="Individual profit margin percentage" value="${esc(row.margin)}" placeholder="${currentGlobalMargin().toFixed(1)}"><span class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">%</span></div></td><td class="metric whitespace-nowrap text-right text-xs font-semibold text-emerald-700" data-result="profit">—</td><td class="metric whitespace-nowrap text-right text-xs font-semibold text-slate-800" data-result="exVat">—</td><td class="pr-5 text-center"><button class="btn btn-quiet delete-row" type="button" aria-label="Delete product" title="Delete product"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 13h11l1-13M9 7V4h6v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>`;
-        tbody.appendChild(tr);
-      }
-      function calculation(row) {
-        const vat = rate('#vatRate');
-        const included = $('#includesVat').checked;
-        const divisor = included && vat > 0 ? 1 + vat : 1;
-        const purchase = num(row.purchase);
-        const landed = (purchase + num(row.transport) + num(row.other)) / divisor;
-        const margin = row.override ? Math.min(99, num(row.margin)) / 100 : currentGlobalMargin() / 100;
-        const overhead = rate('#overheadRate');
-        const denominator = 1 - margin - overhead;
-        if (denominator <= 0) return { purchaseIncVat: purchase * (1 + vat), landed, margin, invalid: true, selling: 0, profit: -landed };
-        const selling = landed / denominator;
-        const profit = selling * (1 - overhead) - landed;
-        return { purchaseIncVat: purchase * (1 + vat), landed, margin, invalid: false, selling, profit };
-      }
-      function recalculate() {
-        let profitTotal = 0, marginSum = 0, validCount = 0, hasInvalid = false;
-        rows.forEach((row) => {
-          const tr = tbody.querySelector(`tr[data-id="${row.id}"]`);
-          if (!tr) return;
-          const result = calculation(row);
-          tr.querySelector('[data-result="purchaseIncVat"]').textContent = fmt(result.purchaseIncVat);
-          tr.querySelector('[data-result="landed"]').textContent = fmt(result.landed);
-          tr.querySelector('[data-result="profit"]').textContent = fmt(result.profit);
-          tr.querySelector('[data-result="exVat"]').textContent = result.invalid ? '—' : fmt(result.selling);
-          tr.querySelector('[data-field="margin"]').placeholder = currentGlobalMargin().toFixed(1);
-          tr.querySelector('[data-field="margin"]').classList.toggle('text-indigo-700', row.override);
-          if (result.invalid) hasInvalid = true;
-          else { profitTotal += result.profit; marginSum += result.profit / result.selling; validCount++; }
-        });
-        $('#totalProducts').textContent = rows.length.toLocaleString();
-        $('#rowCount').textContent = `${rows.length} ${rows.length === 1 ? 'product' : 'products'}`;
-        $('#averageMargin').textContent = validCount ? `${(marginSum / validCount * 100).toFixed(1)}%` : '—';
-        $('#totalProfit').textContent = validCount ? fmt(profitTotal) : '—';
-        const notice = $('#pricingNotice');
-        if (hasInvalid) { notice.textContent = 'A product margin plus overhead fee must be less than 100%. Reduce one of the rates to calculate its selling price.'; notice.classList.remove('hidden'); }
-        else notice.classList.add('hidden');
-        updateVisibility();
-      }
-      function updateVisibility() {
-        const query = $('#searchInput').value.trim().toLocaleLowerCase();
-        let visible = 0;
-        rows.forEach((row) => {
-          const tr = tbody.querySelector(`tr[data-id="${row.id}"]`);
-          if (!tr) return;
-          const match = !query || `${row.code} ${row.description}`.toLocaleLowerCase().includes(query);
-          tr.classList.toggle('hidden', !match);
-          if (match) visible++;
-        });
-        const empty = rows.length === 0 || visible === 0;
-        $('#emptyState').classList.toggle('hidden', !empty);
-        $('#emptyHint').textContent = rows.length === 0 ? 'Add a product or upload a CSV to get started.' : 'Try a different product code or description.';
-        $('#emptyAddBtn').classList.toggle('hidden', rows.length > 0);
-      }
-      function showStatus(message, isError = false) {
-        const el = $('#statusMessage');
-        el.textContent = message;
-        el.className = `mx-5 mt-3 rounded-lg px-3 py-2 text-xs sm:mx-6 ${isError ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'}`;
-        window.clearTimeout(showStatus.timer);
-        showStatus.timer = window.setTimeout(() => el.classList.add('hidden'), 5000);
-      }
-      function csvEscape(value) { const str = String(value ?? ''); return /[",\r\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str; }
-      function downloadCsv(filename, content) {
-        const blob = new Blob(['\ufeff', content], { type: 'text/csv;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const anchor = document.createElement('a'); anchor.href = url; anchor.download = filename; document.body.appendChild(anchor); anchor.click(); anchor.remove(); URL.revokeObjectURL(url);
-      }
-      function parseCsv(text) {
-        const data = []; let row = [], cell = '', quoted = false;
-        for (let i = 0; i < text.length; i++) {
-          const ch = text[i];
-          if (quoted) { if (ch === '"' && text[i + 1] === '"') { cell += '"'; i++; } else if (ch === '"') quoted = false; else cell += ch; }
-          else if (ch === '"') quoted = true;
-          else if (ch === ',') { row.push(cell); cell = ''; }
-          else if (ch === '\n') { row.push(cell.replace(/\r$/, '')); data.push(row); row = []; cell = ''; }
-          else cell += ch;
-        }
-        if (cell.length || row.length) { row.push(cell.replace(/\r$/, '')); data.push(row); }
-        return data.filter((line) => line.some((value) => value.trim() !== ''));
-      }
-      function normalizeHeader(header) { return header.toLowerCase().replace(/[^a-z0-9]/g, ''); }
-      function importCsv(text) {
-        const data = parseCsv(text);
-        if (data.length < 2) throw new Error('The CSV needs a header row and at least one product.');
-        const headers = data[0].map(normalizeHeader);
-        const aliases = {
-          code: ['productcode','code','sku','productsku'], description: ['description','productdescription','productname','name'],
-          purchase: ['purchaseprice','purchasecost','unitpurchaseprice','costprice'], transport: ['transportcost','transport','shippingcost','freightcost'], other: ['othercosts','othercost','additionalcosts','miscellaneouscosts']
-        };
-        const indexes = {};
-        Object.entries(aliases).forEach(([field, names]) => { indexes[field] = headers.findIndex((header) => names.includes(header)); });
-        const missing = Object.entries(indexes).filter(([, index]) => index < 0).map(([field]) => ({code:'Product Code',description:'Description',purchase:'Purchase Price',transport:'Transport Cost',other:'Other Costs'}[field]));
-        if (missing.length) throw new Error(`Missing required column${missing.length > 1 ? 's' : ''}: ${missing.join(', ')}.`);
-        const imported = data.slice(1).map((line) => {
-          const val = (field) => line[indexes[field]] ?? '';
-          const cleanAmount = (value) => { const cleaned = value.replace(/[$£€R\s,]/g, ''); return cleaned === '' ? '' : (Number.isFinite(Number(cleaned)) && Number(cleaned) >= 0 ? Number(cleaned) : ''); };
-          return { code: val('code').trim(), description: val('description').trim(), purchase: cleanAmount(val('purchase')), transport: cleanAmount(val('transport')), other: cleanAmount(val('other')) };
-        });
-        if (!imported.length) throw new Error('No product rows were found in that CSV.');
-        rows.splice(0, rows.length);
-        tbody.replaceChildren();
-        imported.forEach(addProduct);
-        $('#searchInput').value = '';
-        showStatus(`Imported ${imported.length} ${imported.length === 1 ? 'product' : 'products'} successfully.`);
-      }
-      tbody.addEventListener('input', (event) => {
-        const input = event.target.closest('[data-field]'); if (!input) return;
-        const tr = input.closest('tr'); const row = rows.find((item) => item.id === Number(tr.dataset.id)); if (!row) return;
-        row[input.dataset.field] = input.value;
-        if (input.dataset.field === 'margin') row.override = input.value !== '';
-        recalculate();
-      });
-      tbody.addEventListener('click', (event) => {
-        const button = event.target.closest('.delete-row'); if (!button) return;
-        const tr = button.closest('tr'); const id = Number(tr.dataset.id);
-        rows.splice(rows.findIndex((row) => row.id === id), 1); tr.remove(); recalculate();
-      });
-      $('#globalMargin').addEventListener('input', recalculate);
-      $('#vatRate').addEventListener('input', recalculate);
-      $('#overheadRate').addEventListener('input', recalculate);
-      $('#includesVat').addEventListener('change', recalculate);
-      $('#searchInput').addEventListener('input', updateVisibility);
-      $('#addRowBtn').addEventListener('click', () => addProduct());
-      $('#emptyAddBtn').addEventListener('click', () => addProduct());
-      $('#sampleBtn').addEventListener('click', () => downloadCsv('sample-products.csv', 'Product Code,Description,Purchase Price,Transport Cost,Other Costs\nSKU-001,Everyday notebook,4.50,0.65,0.30\nSKU-002,Desk lamp,12.00,1.20,0.85\nSKU-003,Canvas tote bag,3.25,0.45,0.20\n'));
-      $('#exportBtn').addEventListener('click', () => {
-        const headers = ['Product Code','Description','Purchase Price','Purchase Price (Inc. VAT)','Transport Cost','Other Costs','Total Landed Cost (excl. VAT)','Individual Margin (%)','Net Profit Amount','Recommended Selling Price (Excl. VAT)'];
-        const lines = [headers, ...rows.map((row) => { const result = calculation(row); return [row.code,row.description,num(row.purchase).toFixed(2),result.purchaseIncVat.toFixed(2),num(row.transport).toFixed(2),num(row.other).toFixed(2),result.landed.toFixed(2),(result.margin * 100).toFixed(2),result.profit.toFixed(2),result.invalid ? '' : result.selling.toFixed(2)]; })];
-        downloadCsv('calculated-product-prices.csv', lines.map((line) => line.map(csvEscape).join(',')).join('\r\n'));
-        showStatus(`Exported ${rows.length} ${rows.length === 1 ? 'product' : 'products'} to CSV.`);
-      });
-      $('#csvFile').addEventListener('change', async (event) => {
-        const file = event.target.files[0]; if (!file) return;
-        try { importCsv(await file.text()); } catch (error) { showStatus(error.message || 'Could not read that CSV file.', true); }
-        event.target.value = '';
-      });
-      const zone = $('#uploadZone');
-      zone.addEventListener('click', () => $('#csvFile').click());
-      zone.addEventListener('dragover', (event) => { event.preventDefault(); zone.classList.add('dragover'); });
-      zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-      zone.addEventListener('drop', async (event) => {
-        event.preventDefault(); zone.classList.remove('dragover');
-        const file = event.dataTransfer.files[0]; if (!file) return;
-        if (!/\.csv$/i.test(file.name) && file.type !== 'text/csv') { showStatus('Please drop a CSV file.', true); return; }
-        try { importCsv(await file.text()); } catch (error) { showStatus(error.message || 'Could not read that CSV file.', true); }
-      });
-      addProduct({ code: 'SKU-001', description: 'Everyday notebook', purchase: '4.50', transport: '0.65', other: '0.30' });
-      addProduct({ code: 'SKU-002', description: 'Desk lamp', purchase: '12.00', transport: '1.20', other: '0.85' });
-      addProduct({ code: 'SKU-003', description: 'Canvas tote bag', purchase: '3.25', transport: '0.45', other: '0.20' });
-    })();
-  </script>
+<div class="min-h-screen">
+  <header class="border-b border-slate-200/80 bg-white"><div class="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-4 sm:px-8"><a href="#" class="flex items-center gap-3" aria-label="Marginwise home"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-200"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 17.5 9.2 12l3.3 3.2L20 7m-4.5 0H20v4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b class="font-display block text-[17px] font-extrabold tracking-tight text-slate-900">marginwise</b><span class="block text-[11px] font-medium text-slate-400">PRICING WORKSPACE</span></span></a><span class="hidden items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 sm:flex"><i class="h-1.5 w-1.5 rounded-full bg-emerald-500"></i>All changes saved locally</span></div></header>
+  <main class="mx-auto max-w-[1600px] px-4 py-7 sm:px-8 sm:py-9">
+    <section class="mb-7 flex flex-col justify-between gap-5 lg:flex-row lg:items-end"><div><div class="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[.12em] text-indigo-600"><span class="h-px w-5 bg-indigo-500"></span>Product economics</div><h1 class="font-display text-2xl font-extrabold tracking-tight text-slate-900 sm:text-[30px]">Pricing &amp; landed cost calculator</h1><p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Know your true per-unit cost, protect your margins, and set smarter selling prices across your catalog.</p></div><div class="flex flex-wrap gap-2"><button id="sampleBtn" class="btn btn-secondary" type="button">↓ Download sample CSV</button><button id="exportBtn" class="btn btn-primary" type="button">↑ Export calculated prices</button></div></section>
+    <section class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3" aria-label="Catalog summary"><article class="panel flex items-center gap-4 p-5"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">▤</div><div><p class="text-xs text-slate-500">Total products</p><p id="totalProducts" class="metric mt-1 text-[23px] font-bold text-slate-900">0</p></div></article><article class="panel flex items-center gap-4 p-5"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600">↗</div><div><p class="text-xs text-slate-500">Average profit margin</p><p id="averageMargin" class="metric mt-1 text-[23px] font-bold text-slate-900">—</p></div></article><article class="panel flex items-center gap-4 p-5"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">R</div><div><p class="text-xs text-slate-500">Potential profit <span class="text-slate-400">· 1 unit / SKU</span></p><p id="totalProfit" class="metric mt-1 text-[23px] font-bold text-emerald-700">—</p></div></article></section>
+    <section class="panel mb-6 p-5 sm:p-6" aria-labelledby="settingsTitle"><div class="mb-5"><h2 id="settingsTitle" class="font-display text-sm font-bold text-slate-900">Global pricing settings</h2><p class="mt-1 text-xs text-slate-500">Update defaults across your catalog. Product-specific margins remain unchanged.</p></div><div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"><label><span class="mb-2 block text-xs font-semibold text-slate-600">Universal target profit margin</span><span class="relative block"><input id="globalMargin" class="setting-input pr-9" type="number" min="0" max="99" step="0.1" value="30"><span class="absolute right-3 top-2 text-sm text-slate-400">%</span></span></label><label><span class="mb-2 block text-xs font-semibold text-slate-600">VAT rate</span><span class="relative block"><input id="vatRate" class="setting-input pr-9" type="number" min="0" max="100" step="0.1" value="15"><span class="absolute right-3 top-2 text-sm text-slate-400">%</span></span></label><label><span class="mb-2 block text-xs font-semibold text-slate-600">Overhead / payment fee</span><span class="relative block"><input id="overheadRate" class="setting-input pr-9" type="number" min="0" max="99" step="0.1" value="2.5"><span class="absolute right-3 top-2 text-sm text-slate-400">%</span></span></label><div class="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 px-4 py-3"><div><p class="text-xs font-semibold text-slate-700">Costs include VAT</p><p class="mt-1 text-[11px] text-slate-500">Purchase price is already VAT-inclusive</p></div><input id="includesVat" class="switch" type="checkbox" aria-label="Purchase price already includes VAT"></div></div><p id="pricingNotice" class="mt-4 hidden rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800" role="status"></p></section>
+    <section class="panel overflow-hidden" aria-labelledby="catalogTitle"><div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:p-6 xl:flex-row xl:items-center xl:justify-between"><div><h2 id="catalogTitle" class="font-display text-sm font-bold text-slate-900">Product catalog</h2><p class="mt-1 text-xs text-slate-500">Edit fields to recalculate pricing in real time.</p></div><div class="flex flex-col gap-2 sm:flex-row sm:items-center"><label class="relative"><span class="absolute left-3 top-2.5 text-slate-400">⌕</span><input id="searchInput" class="search" type="search" placeholder="Search products…" aria-label="Search by product code or description"></label><label class="btn btn-secondary">↑ Upload CSV<input id="csvFile" class="sr-only" type="file" accept=".csv,text/csv"></label><button id="addRowBtn" class="btn btn-primary" type="button">＋ Add product</button></div></div>
+      <div id="uploadZone" class="upload-zone mx-5 mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-4 py-3 text-center text-xs text-slate-500 sm:mx-6"><span><b class="text-slate-700">Drop a CSV file here</b> or use Upload CSV. Upload replaces the current catalog.</span></div><div id="statusMessage" class="mx-5 mt-3 hidden rounded-lg px-3 py-2 text-xs sm:mx-6" role="status"></div>
+      <div class="table-wrap mt-4"><table aria-label="Product pricing table"><thead><tr><th class="pl-6 text-left">Product code</th><th class="text-left">Description</th><th class="text-right">Purchase price</th><th class="text-right">Purchase price<br>(incl. VAT)</th><th class="text-right">Transport / unit</th><th class="text-right">Other costs</th><th class="text-right">Landed cost</th><th class="text-right">Margin</th><th class="text-right">Net profit</th><th class="text-right">Selling price<br>(excl. VAT)</th><th class="pr-5 text-center">Action</th></tr></thead><tbody id="productRows"></tbody></table></div>
+      <div id="emptyState" class="hidden px-6 py-14 text-center"><p class="font-display text-sm font-bold text-slate-800">No products to show</p><p id="emptyHint" class="mt-1 text-xs text-slate-500">Add a product or upload a CSV to get started.</p><button id="emptyAddBtn" class="btn btn-secondary mt-4" type="button">Add your first product</button></div><div class="flex flex-col gap-2 border-t border-slate-100 px-5 py-3 text-[11px] text-slate-400 sm:flex-row sm:justify-between"><span>Landed cost = purchase price (incl. VAT) + transport / unit + other costs.</span><span>Data stays in this browser session; no server upload.</span></div></section>
+    <footer class="py-6 text-center text-[11px] text-slate-400">Marginwise · A clear view of every cost behind your price.</footer>
+  </main>
+</div>
+<script>
+(() => {
+  'use strict';
+  const $ = s => document.querySelector(s), tbody = $('#productRows'), rows = [];
+  let nextId = 1;
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const num = v => { const n = Number.parseFloat(v); return Number.isFinite(n) ? Math.max(0,n) : 0; };
+  const pct = s => Math.min(100,Math.max(0,num($(s).value)))/100;
+  const globalMargin = () => Math.min(99,num($('#globalMargin').value));
+  const fmt = v => `R ${new Intl.NumberFormat('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number.isFinite(v)?v:0)}`;
+  function calculate(row) {
+    const vat = pct('#vatRate'), purchase = num(row.purchase);
+    const purchaseIncVat = $('#includesVat').checked ? purchase : purchase * (1 + vat);
+    // Landed cost is calculated from the VAT-inclusive purchase price plus the other per-unit costs.
+    const landed = purchaseIncVat + num(row.transport) + num(row.other);
+    const margin = (row.override ? Math.min(99,num(row.margin)) : globalMargin()) / 100;
+    const overhead = pct('#overheadRate'), denominator = 1 - margin - overhead;
+    if (denominator <= 0) return {purchaseIncVat,landed,margin,invalid:true,selling:0,profit:-landed};
+    const selling = landed / denominator;
+    return {purchaseIncVat,landed,margin,invalid:false,selling,profit:selling*(1-overhead)-landed};
+  }
+  function addProduct(p={}) {
+    const row={id:nextId++,code:p.code??'',description:p.description??'',purchase:p.purchase??'',transport:p.transport??'',other:p.other??'',margin:p.margin??'',override:p.margin!==undefined&&p.margin!==null&&p.margin!==''};
+    rows.push(row); renderRow(row); recalculate();
+  }
+  function renderRow(row) {
+    const tr=document.createElement('tr'); tr.dataset.id=row.id;
+    const text=(f,ph)=>`<td><input class="cell-input" data-field="${f}" aria-label="${ph}" value="${esc(row[f])}" placeholder="${ph}"></td>`;
+    const number=(f,ph)=>`<td><input class="cell-input numeric" data-field="${f}" type="number" min="0" step="0.01" aria-label="${ph}" value="${esc(row[f])}" placeholder="0.00"></td>`;
+    tr.innerHTML=`${text('code','Product code')} ${text('description','Description')} ${number('purchase','Purchase price')}<td class="metric whitespace-nowrap text-right text-xs font-semibold text-slate-700" data-result="purchaseIncVat">—</td> ${number('transport','Transport cost')} ${number('other','Other costs')}<td class="metric whitespace-nowrap text-right text-xs font-semibold text-slate-700" data-result="landed">—</td><td><div class="relative"><input class="cell-input numeric pr-6" data-field="margin" type="number" min="0" max="99" step="0.1" aria-label="Individual profit margin" value="${esc(row.margin)}" placeholder="${globalMargin().toFixed(1)}"><span class="absolute right-2 top-2 text-xs text-slate-400">%</span></div></td><td class="metric whitespace-nowrap text-right text-xs font-semibold text-emerald-700" data-result="profit">—</td><td class="metric whitespace-nowrap text-right text-xs font-semibold text-slate-800" data-result="selling">—</td><td class="pr-5 text-center"><button class="btn btn-quiet delete-row" type="button" aria-label="Delete product" title="Delete product">×</button></td>`;
+    tbody.appendChild(tr);
+  }
+  function recalculate() {
+    let totalProfit=0, marginSum=0, valid=0, invalid=false;
+    rows.forEach(row=>{
+      const tr=tbody.querySelector(`tr[data-id="${row.id}"]`); if(!tr)return;
+      const result=calculate(row);
+      tr.querySelector('[data-result="purchaseIncVat"]').textContent=fmt(result.purchaseIncVat);
+      tr.querySelector('[data-result="landed"]').textContent=fmt(result.landed);
+      tr.querySelector('[data-result="profit"]').textContent=fmt(result.profit);
+      tr.querySelector('[data-result="selling"]').textContent=result.invalid?'—':fmt(result.selling);
+      tr.querySelector('[data-field="margin"]').placeholder=globalMargin().toFixed(1);
+      tr.querySelector('[data-field="margin"]').classList.toggle('text-indigo-700',row.override);
+      if(result.invalid)invalid=true; else { totalProfit+=result.profit; marginSum+=result.profit/result.selling; valid++; }
+    });
+    $('#totalProducts').textContent=rows.length.toLocaleString();
+    $('#averageMargin').textContent=valid?`${(marginSum/valid*100).toFixed(1)}%`:'—';
+    $('#totalProfit').textContent=valid?fmt(totalProfit):'—';
+    const notice=$('#pricingNotice');
+    if(invalid){notice.textContent='A product margin plus overhead fee must be less than 100%. Reduce one of the rates to calculate its selling price.';notice.classList.remove('hidden');}else notice.classList.add('hidden');
+    updateVisibility();
+  }
+  function updateVisibility() {
+    const q=$('#searchInput').value.trim().toLocaleLowerCase(); let visible=0;
+    rows.forEach(row=>{const tr=tbody.querySelector(`tr[data-id="${row.id}"]`);if(!tr)return;const match=!q||`${row.code} ${row.description}`.toLocaleLowerCase().includes(q);tr.classList.toggle('hidden',!match);if(match)visible++;});
+    const empty=rows.length===0||visible===0;$('#emptyState').classList.toggle('hidden',!empty);$('#emptyHint').textContent=rows.length===0?'Add a product or upload a CSV to get started.':'Try a different product code or description.';$('#emptyAddBtn').classList.toggle('hidden',rows.length>0);
+  }
+  function status(message,error=false){const el=$('#statusMessage');el.textContent=message;el.className=`mx-5 mt-3 rounded-lg px-3 py-2 text-xs sm:mx-6 ${error?'bg-rose-50 text-rose-700':'bg-emerald-50 text-emerald-700'}`;clearTimeout(status.timer);status.timer=setTimeout(()=>el.classList.add('hidden'),5000);}
+  const csvEscape=v=>{const s=String(v??'');return /[",\r\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;};
+  function download(name,content){const blob=new Blob(['\ufeff',content],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
+  function parseCsv(text){const out=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){cell+='"';i++;}else if(c==='"')quoted=false;else cell+=c;}else if(c==='"')quoted=true;else if(c===','){row.push(cell);cell='';}else if(c==='\n'){row.push(cell.replace(/\r$/,''));out.push(row);row=[];cell='';}else cell+=c;}if(cell.length||row.length){row.push(cell.replace(/\r$/,''));out.push(row);}return out.filter(r=>r.some(v=>v.trim()));}
+  function importCsv(text){const data=parseCsv(text);if(data.length<2)throw Error('The CSV needs a header row and at least one product.');const headers=data[0].map(h=>h.toLowerCase().replace(/[^a-z0-9]/g,''));const map={code:['productcode','code','sku','productsku'],description:['description','productdescription','productname','name'],purchase:['purchaseprice','purchasecost','unitpurchaseprice','costprice'],transport:['transportcost','transport','shippingcost','freightcost'],other:['othercosts','othercost','additionalcosts','miscellaneouscosts']};const indexes={};Object.entries(map).forEach(([f,names])=>indexes[f]=headers.findIndex(h=>names.includes(h)));const labels={code:'Product Code',description:'Description',purchase:'Purchase Price',transport:'Transport Cost',other:'Other Costs'};const missing=Object.entries(indexes).filter(([,i])=>i<0).map(([f])=>labels[f]);if(missing.length)throw Error(`Missing required columns: ${missing.join(', ')}.`);const imported=data.slice(1).map(line=>{const value=f=>line[indexes[f]]??'';const amount=v=>{const s=v.replace(/[$£€R\s,]/g,'');return s===''?'':Number.isFinite(Number(s))&&Number(s)>=0?Number(s):'';};return{code:value('code').trim(),description:value('description').trim(),purchase:amount(value('purchase')),transport:amount(value('transport')),other:amount(value('other'))};});if(!imported.length)throw Error('No product rows were found in that CSV.');rows.splice(0,rows.length);tbody.replaceChildren();imported.forEach(addProduct);$('#searchInput').value='';status(`Imported ${imported.length} product${imported.length===1?'':'s'} successfully.`);}
+  tbody.addEventListener('input',e=>{const input=e.target.closest('[data-field]');if(!input)return;const row=rows.find(r=>r.id===Number(input.closest('tr').dataset.id));if(!row)return;row[input.dataset.field]=input.value;if(input.dataset.field==='margin')row.override=input.value!=='';recalculate();});
+  tbody.addEventListener('click',e=>{const button=e.target.closest('.delete-row');if(!button)return;const tr=button.closest('tr'),id=Number(tr.dataset.id);rows.splice(rows.findIndex(r=>r.id===id),1);tr.remove();recalculate();});
+  ['#globalMargin','#vatRate','#overheadRate'].forEach(s=>$(s).addEventListener('input',recalculate));$('#includesVat').addEventListener('change',recalculate);$('#searchInput').addEventListener('input',updateVisibility);$('#addRowBtn').addEventListener('click',()=>addProduct());$('#emptyAddBtn').addEventListener('click',()=>addProduct());
+  $('#sampleBtn').addEventListener('click',()=>download('sample-products.csv','Product Code,Description,Purchase Price,Transport Cost,Other Costs\nSKU-001,Everyday notebook,4.50,0.65,0.30\nSKU-002,Desk lamp,12.00,1.20,0.85\nSKU-003,Canvas tote bag,3.25,0.45,0.20\n'));
+  $('#exportBtn').addEventListener('click',()=>{const headers=['Product Code','Description','Purchase Price','Purchase Price (Inc. VAT)','Transport Cost','Other Costs','Total Landed Cost','Individual Margin (%)','Net Profit Amount','Recommended Selling Price (Excl. VAT)'];const lines=[headers,...rows.map(row=>{const r=calculate(row);return[row.code,row.description,num(row.purchase).toFixed(2),r.purchaseIncVat.toFixed(2),num(row.transport).toFixed(2),num(row.other).toFixed(2),r.landed.toFixed(2),(r.margin*100).toFixed(2),r.profit.toFixed(2),r.invalid?'':r.selling.toFixed(2)];})];download('calculated-product-prices.csv',lines.map(line=>line.map(csvEscape).join(',')).join('\r\n'));status(`Exported ${rows.length} product${rows.length===1?'':'s'} to CSV.`);});
+  $('#csvFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{importCsv(await file.text());}catch(err){status(err.message||'Could not read that CSV file.',true);}e.target.value='';});
+  const zone=$('#uploadZone');zone.addEventListener('click',()=>$('#csvFile').click());zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));zone.addEventListener('drop',async e=>{e.preventDefault();zone.classList.remove('dragover');const file=e.dataTransfer.files[0];if(!file)return;if(!/\.csv$/i.test(file.name)&&file.type!=='text/csv'){status('Please drop a CSV file.',true);return;}try{importCsv(await file.text());}catch(err){status(err.message||'Could not read that CSV file.',true);}});
+  addProduct({code:'SKU-001',description:'Everyday notebook',purchase:'4.50',transport:'0.65',other:'0.30'});addProduct({code:'SKU-002',description:'Desk lamp',purchase:'12.00',transport:'1.20',other:'0.85'});addProduct({code:'SKU-003',description:'Canvas tote bag',purchase:'3.25',transport:'0.45',other:'0.20'});
+})();
+</script>
 </body>
 </html>
