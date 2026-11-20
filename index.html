@@ -134,10 +134,9 @@
       const tbody = $('#productRows');
       const rows = [];
       let nextId = 1;
-      const fields = ['code', 'description', 'purchase', 'transport', 'other', 'margin'];
       const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
       const num = (value) => { const parsed = Number.parseFloat(value); return Number.isFinite(parsed) ? Math.max(0, parsed) : 0; };
-      const fmt = (value) => new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number.isFinite(value) ? value : 0);
+      const fmt = (value) => `R ${new Intl.NumberFormat('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number.isFinite(value) ? value : 0)}`;
       const rate = (selector) => Math.min(100, Math.max(0, num($(selector).value))) / 100;
       const currentGlobalMargin = () => Math.min(99, num($('#globalMargin').value));
 
@@ -248,7 +247,7 @@
         if (missing.length) throw new Error(`Missing required column${missing.length > 1 ? 's' : ''}: ${missing.join(', ')}.`);
         const imported = data.slice(1).map((line) => {
           const val = (field) => line[indexes[field]] ?? '';
-          const cleanAmount = (value) => { const cleaned = value.replace(/[$£€\s,]/g, ''); return cleaned === '' ? '' : (Number.isFinite(Number(cleaned)) && Number(cleaned) >= 0 ? Number(cleaned) : ''); };
+          const cleanAmount = (value) => { const cleaned = value.replace(/[$£€R\s,]/g, ''); return cleaned === '' ? '' : (Number.isFinite(Number(cleaned)) && Number(cleaned) >= 0 ? Number(cleaned) : ''); };
           return { code: val('code').trim(), description: val('description').trim(), purchase: cleanAmount(val('purchase')), transport: cleanAmount(val('transport')), other: cleanAmount(val('other')) };
         });
         if (!imported.length) throw new Error('No product rows were found in that CSV.');
@@ -295,7 +294,7 @@
       zone.addEventListener('dragover', (event) => { event.preventDefault(); zone.classList.add('dragover'); });
       zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
       zone.addEventListener('drop', async (event) => {
-        event.preventDefault(); zone.classList.remove('dragover');
+        event.preventEvent(); zone.classList.remove('dragover');
         const file = event.dataTransfer.files[0]; if (!file) return;
         if (!/\.csv$/i.test(file.name) && file.type !== 'text/csv') { showStatus('Please drop a CSV file.', true); return; }
         try { importCsv(await file.text()); } catch (error) { showStatus(error.message || 'Could not read that CSV file.', true); }
